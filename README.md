@@ -30,3 +30,14 @@ Overall I hope you enjoy my game and you are free to use my code as a template.:
 
 </details>
 
+<details id=3 open>
+<summary><h2>Setup</h2></summary>
+1. To use my game first install my files as a zip.
+Or clone with this link: _https://github.com/greeenboi/Snake-Game.git_
+
+2. Then once downloaded into your system or venv, Ensure that the text file 
+`screensize.txt` is intact and has the exact value _1280*720_ inside it *(I will add a program called debug.py to automate this functionality soon)*
+
+Then on your preferred code editor run main.py and The game should work!:tada::grin::tada:
+
+</details>
