@@ -34,9 +34,12 @@ def initial():
 
 def dis_size():
     status=open("screensize.txt","r")
+            
     size=status.read()
+    
     status.close()
     infoObject = pygame.display.Info()
+    
     if size == "FULLSCREEN":
         return ([infoObject.current_w, infoObject.current_h])
     elif size == "1280*720":
@@ -96,17 +99,14 @@ def tkloop():
     close_button=tkinter.Button(root, text= "Please restart the game", font=("Calibri",14,"bold"), command=root.destroy)
     close_button.pack(pady=20)
       
-    root.mainloop()
-    
-   
-    
+    root.mainloop()    
     
 def menu():
     dis.fill(green)
     mixer.music.set_volume(0.7)
-    MainTheme = pygame.mixer.music.load("./assets/Main Theme.wav")
+    MainTheme = pygame.mixer.music.load("./assets/Main Theme.mp3")
     pygame.mixer.music.play(-1)
-    
+    size=dis_size()
     #print("no error")
     while True:
         pygame.display.set_caption('MAIN MENU')
@@ -114,22 +114,22 @@ def menu():
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         MENU_FONT = get_title(150).render("MAIN MENU", True, "#FFC000")
-        MENU_RECT = MENU_FONT.get_rect(center=(640, 100))
+        MENU_RECT = MENU_FONT.get_rect(center=(size[0]/2, 100))
 
         PLAY_BUTTON = Button(image=pygame.image.load("./assets/Play Rect.png"),
-                             pos=(640, 250),
+                             pos=(size[0]/2, 250),
                              text_input="PLAY",
                              font=get_font(75),
                              base_color="#d7fcd4",
                              hovering_color="White")
         OPTIONS_BUTTON = Button(image=pygame.image.load("./assets/Options Rect.png"),
-                                pos=(640, 400),
+                                pos=(size[0]/2, 400),
                                 text_input="Controls",
                                 font=get_font(74),
                                 base_color="#d7fcd4",
                                 hovering_color="White")
         QUIT_BUTTON = Button(image=pygame.image.load("./assets/Quit Rect.png"),
-                             pos=(640, 550),
+                             pos=(size[0]/2, 550),
                              text_input="QUIT",
                              font=get_font(75),
                              base_color="#d7fcd4",
@@ -139,7 +139,12 @@ def menu():
             button.changeColor(MENU_MOUSE_POS)  
             hover()
             button.update(dis)
-        for event in pygame.event.get():            
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     hover()
@@ -158,6 +163,7 @@ def options():
     global framerate
     DEFAULT_FRAMERATE = 10
     framerate = DEFAULT_FRAMERATE
+    size=dis_size()
     while True:
         pygame.display.set_caption('CONTROLS')
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
@@ -180,7 +186,7 @@ def options():
         dis.blit(INSTRUCTIONS_TEXT_2, INSTRUCTIONS_RECT_2)
 
         OPTIONS_BACK = Button(image=None,
-                              pos=(1000, 660),
+                              pos=(1100, 660),
                               text_input="BACK",
                               font=get_font(75),
                               base_color="Black",
@@ -216,7 +222,6 @@ def options():
                     sys.exit()
         pygame.display.update()           
         
-
 
 def restart(score):
     dis.fill(green)
@@ -258,20 +263,21 @@ def restart(score):
 
         pygame.display.update()
 
-def pause():    
+def pause():  
+    size=dis_size()
     loop = 1 
-    shape_surf = pygame.Surface(pygame.Rect((0, 0, 1280, 720)).size, pygame.SRCALPHA)
+    shape_surf = pygame.Surface(pygame.Rect((0, 0, size[0], size[1])).size, pygame.SRCALPHA)
     pygame.draw.rect(shape_surf, (10, 10, 10, 127), shape_surf.get_rect())
-    dis.blit(shape_surf, (0, 0, 1280, 720))
+    dis.blit(shape_surf, (0, 0, size[0], size[1]))
     
     PAUSE_TEXT = get_font(70).render("PAUSED", True, "White")
-    PAUSE_RECT = PAUSE_TEXT.get_rect(center=(640, 100))
+    PAUSE_RECT = PAUSE_TEXT.get_rect(center=(size[0]/2, 100))
     dis.blit(PAUSE_TEXT,PAUSE_RECT)    
     while loop:    
         pygame.display.set_caption('PAUSED')
         PAUSE_MOUSE_POS = pygame.mouse.get_pos()
         PAUSE_RESUME = Button(image=None,
-                              pos=(300, 600),
+                              pos=(int(size[0]/3.7), 600),
                               text_input="RESUME",
                               font=get_font(75),
                               base_color="Yellow",
@@ -281,7 +287,7 @@ def pause():
         PAUSE_RESUME.update(dis)    
         
         PAUSE_QUIT = Button(image=None,
-                              pos=(960, 600),
+                              pos=(int(size[0]/1.3), 600),
                               text_input="QUIT",
                               font=get_font(75),
                               base_color="Yellow",
@@ -320,7 +326,7 @@ def play():
     count=0
     
     print("no error")
-    GameTheme= pygame.mixer.music.load("./assets/in game theme.wav")
+    GameTheme= pygame.mixer.music.load("./assets/in game theme.mp3")
     pygame.mixer.music.play(-1)
     mixer.music.set_volume(0.5)
 
@@ -331,7 +337,7 @@ def play():
         c1 = random.randint(97, 193)
         c2 = random.randint(54, 151)
         c3 = random.randint(89, 210)
-
+        size=dis_size()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_LEFT
@@ -366,12 +372,12 @@ def play():
         if len(snake_list) > snake_len:
             del snake_list[0]
 
-        if ([x1, y1] in snake_list[:-1]):
+        #if ([x1, y1] in snake_list[:-1]):
             #print("snake got headache")
-            pygame.mixer.Channel(1).stop()
-            restart(count)
+         #   pygame.mixer.Channel(1).stop()
+          #  restart(count)
 
-        if (x1 >= 1280 or x1 < 0 or y1 >= 720 or y1 < 0):
+        if (x1 >= size[0] or x1 < 0 or y1 >= size[1] or y1 < 0):
             #print("snake tried to noclip")
             pygame.mixer.Channel(1).stop()
             restart(count)
