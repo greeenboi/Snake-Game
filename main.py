@@ -3,18 +3,48 @@ import random
 from button import Button
 import sys
 from pygame import mixer
-
-#initialisation
+import os
+from pygame.locals import *
+import tkinter
 
 pygame.init()
 mixer.init()
 
-# setting up variable clock
 clock = pygame.time.Clock()
 
-#display width and height
-dis_width = 1280
-dis_height = 720
+def initial():
+    #initialisation
+    
+    pygame.init()
+    mixer.init()
+    
+    infoObject = pygame.display.Info()
+    print (infoObject.current_w, infoObject.current_h)
+    
+    dis_dim=dis_size()
+    BG = pygame.image.load("./assets/menu bg.jpg")
+
+    dis = pygame.display.set_mode((dis_dim[0], dis_dim[1]))
+
+    Icon = pygame.image.load('./assets/icon.jpg')
+
+    pygame.display.set_icon(Icon)
+    
+    
+
+def dis_size():
+    status=open("screensize.txt","r")
+    size=status.read()
+    status.close()
+    infoObject = pygame.display.Info()
+    if size == "FULLSCREEN":
+        return ([infoObject.current_w, infoObject.current_h])
+    elif size == "1280*720":
+        return (1280,720)
+    elif size == "1200*700":
+        return (1200,700)
+
+dis_dim=dis_size()
 
 black = (33, 21, 34)
 green = (50, 168, 117)
@@ -22,9 +52,14 @@ grey = (63, 63, 63)
 
 BG = pygame.image.load("./assets/menu bg.jpg")
 
-dis = pygame.display.set_mode((dis_width, dis_height))
+dis = pygame.display.set_mode((dis_dim[0], dis_dim[1]), HWSURFACE | DOUBLEBUF | RESIZABLE)
+
+Icon = pygame.image.load('./assets/icon.jpg')
 
 
+pygame.display.set_icon(Icon)
+
+        
 
 def get_font(size):  
     return pygame.font.Font("./assets/plagfont.otf", size)
@@ -35,7 +70,37 @@ def get_title(size):
 def hover():
     pygame.mixer.Channel(0).play(pygame.mixer.Sound("./assets/button hover sound.wav"))
     
-
+def tkloop():
+    root = tkinter.Tk()
+    root.title("DISPLAY INITIALISATION")
+    root.geometry("300x120")      
+    
+    options_list = ["1280*720","FULLSCREEN","1200*700"]      
+   
+    value_inside = tkinter.StringVar(root)      
+    
+    value_inside.set("Select an Option")      
+    
+    question_menu = tkinter.OptionMenu(root, value_inside, *options_list)
+    question_menu.pack()    
+      
+    def print_answers():
+        print("Selected Option: {}".format(value_inside.get()))
+        status=open("screensize.txt","w")
+        status.write(value_inside.get())
+        status.close()
+        return None
+      
+    submit_button = tkinter.Button(root, text='Submit', command=print_answers)
+    submit_button.pack()
+    close_button=tkinter.Button(root, text= "Please restart the game", font=("Calibri",14,"bold"), command=root.destroy)
+    close_button.pack(pady=20)
+      
+    root.mainloop()
+    
+   
+    
+    
 def menu():
     dis.fill(green)
     mixer.music.set_volume(0.7)
@@ -44,6 +109,7 @@ def menu():
     
     #print("no error")
     while True:
+        pygame.display.set_caption('MAIN MENU')
         dis.blit(BG, (0, 0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -73,7 +139,7 @@ def menu():
             button.changeColor(MENU_MOUSE_POS)  
             hover()
             button.update(dis)
-        for event in pygame.event.get():
+        for event in pygame.event.get():            
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     hover()
@@ -87,12 +153,13 @@ def menu():
 
         pygame.display.update()
 
-
+ 
 def options():
     global framerate
     DEFAULT_FRAMERATE = 10
     framerate = DEFAULT_FRAMERATE
     while True:
+        pygame.display.set_caption('CONTROLS')
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
         dis.fill("blue violet")
@@ -106,14 +173,14 @@ def options():
 
         INSTRUCTIONS_TEXT_2 = get_font(45).render("SPACE OR ESC TO PAUSE", True,
                                                 "Black")
-        INSTRUCTIONS_RECT_2 = OPTIONS_TEXT.get_rect(center=(340, 560))
+        INSTRUCTIONS_RECT_2 = OPTIONS_TEXT.get_rect(center=(340, 460))
         
         dis.blit(OPTIONS_TEXT, OPTIONS_RECT)
         dis.blit(INSTRUCTIONS_TEXT_1, INSTRUCTIONS_RECT_1)
         dis.blit(INSTRUCTIONS_TEXT_2, INSTRUCTIONS_RECT_2)
 
         OPTIONS_BACK = Button(image=None,
-                              pos=(840, 660),
+                              pos=(1000, 660),
                               text_input="BACK",
                               font=get_font(75),
                               base_color="Black",
@@ -121,7 +188,19 @@ def options():
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(dis)
+        
+        OPTIONS_DISP = Button(image=None,
+                              pos=(440, 660),
+                              text_input="DISPLAY SETTINGS",
+                              font=get_font(75),
+                              base_color="Black",
+                              hovering_color="Green")
 
+        OPTIONS_DISP.changeColor(OPTIONS_MOUSE_POS)
+        OPTIONS_DISP.update(dis)
+        
+        
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -130,8 +209,13 @@ def options():
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     hover()
                     menu()
-
-        pygame.display.update()
+                if OPTIONS_DISP.checkForInput(OPTIONS_MOUSE_POS):
+                    hover()
+                    pygame.quit()                    
+                    tkloop()
+                    sys.exit()
+        pygame.display.update()           
+        
 
 
 def restart(score):
@@ -141,6 +225,7 @@ def restart(score):
     mixer.music.play(1)
     score_text="YOUR SCORE :"+str(score)+" POINTS"
     while True:
+        pygame.display.set_caption('RESTART')
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         dis.fill("black")
@@ -183,6 +268,7 @@ def pause():
     PAUSE_RECT = PAUSE_TEXT.get_rect(center=(640, 100))
     dis.blit(PAUSE_TEXT,PAUSE_RECT)    
     while loop:    
+        pygame.display.set_caption('PAUSED')
         PAUSE_MOUSE_POS = pygame.mouse.get_pos()
         PAUSE_RESUME = Button(image=None,
                               pos=(300, 600),
@@ -239,7 +325,7 @@ def play():
     mixer.music.set_volume(0.5)
 
     while True:
-
+        pygame.display.set_caption('PLAY')
         PREV_KEY = ""
         dis.fill(black)
         c1 = random.randint(97, 193)
