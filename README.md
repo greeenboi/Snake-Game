@@ -49,7 +49,7 @@ Then on your preferred code editor run main.py and The game should work!:tada::g
 
 ![image](https://user-images.githubusercontent.com/118198968/215283047-173ca16a-4167-46fc-9f55-abdf87c7b5d4.png)
 
-![image](https://user-images.githubusercontent.com/118198968/215283503-f3660093-efa8-4fe3-81af-a42edfe7a1e8.png)
+
 
 ![image](https://user-images.githubusercontent.com/118198968/215283523-a102cb65-c41b-4d79-a570-4b47038c29f2.png)
 
