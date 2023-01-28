@@ -1,12 +1,13 @@
 # Snake-Game
-_Snake game; passion project made by me when I wanted to learn pygame._
+_Snake game; passion project made by me when I wanted to learn pygame._:snake:
 
 
 
 <details id=1 open>
 <summary><h2>Libraries used:</h2></summary>
-1. Pygame _pip install pygame_
-2. Tkinter _pip install tkinter_
+  
+1. Pygame `pip install pygame`
+2. Tkinter `pip install tkinter`
 3. sys
 4. os
 5. mixer
@@ -33,7 +34,7 @@ Overall I hope you enjoy my game and you are free to use my code as a template.:
 <details id=3 open>
 <summary><h2>Setup</h2></summary>
 1. To use my game first install my files as a zip.
-Or clone with this link: _https://github.com/greeenboi/Snake-Game.git_
+Or clone with this link: https://github.com/greeenboi/Snake-Game.git
 
 2. Then once downloaded into your system or venv, Ensure that the text file 
 `screensize.txt` is intact and has the exact value _1280*720_ inside it *(I will add a program called debug.py to automate this functionality soon)*
@@ -41,3 +42,18 @@ Or clone with this link: _https://github.com/greeenboi/Snake-Game.git_
 Then on your preferred code editor run main.py and The game should work!:tada::grin::tada:
 
 </details>
+
+# Gameplay Screenshots
+
+![image](https://user-images.githubusercontent.com/118198968/215282936-ac7fe67e-08e2-40f2-917e-a19cbce7c081.png)
+
+![image](https://user-images.githubusercontent.com/118198968/215283047-173ca16a-4167-46fc-9f55-abdf87c7b5d4.png)
+
+
+
+
+
+
+
+
+
