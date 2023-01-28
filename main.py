@@ -49,7 +49,7 @@ def dis_size():
 
 dis_dim=dis_size()
 
-black = (33, 21, 34)
+black = (48, 25, 52)
 green = (50, 168, 117)
 grey = (63, 63, 63)
 
