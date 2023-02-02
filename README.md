@@ -26,7 +26,7 @@ Also I added some music, SFX and visuals on the buttons.
 Overall I hope you enjoy my game and you are free to use my code as a template.:smiley:
 
 
-**[Check my REPLIT for playable version with lesser code](https://replit.com/@greeenboi1/Snake-game?v=1)**:tada:
+**[Check my REPLIT for playable version but with lesser features](https://replit.com/@greeenboi1/Snake-game?v=1)**:tada:
 
 
 </details>
