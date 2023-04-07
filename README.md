@@ -7,7 +7,7 @@ _Snake game; passion project made by me when I wanted to learn pygame._:snake:
 <summary><h2>Libraries used:</h2></summary>
   
 1. Pygame `pip install pygame`
-2. Tkinter `pip install tkinter`
+2. Tkinter `pip install tk`
 3. sys
 4. os
 5. mixer
